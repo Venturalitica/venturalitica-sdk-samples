@@ -1,0 +1,74 @@
+# Venturalitica Baseline Policy: Governance Management System
+# Use this as a starting point for governance automation.
+
+catalog:
+  uuid: "governance-baseline"
+  metadata:
+    title: "Venturalitica Governance Baseline Controls"
+    version: "1.0"
+
+  controls:
+    - id: "A.1"
+      title: "Fairness and Non-discrimination"
+      description: "Ensure the AI system does not exhibit unjustified bias."
+      
+    - id: "A.2"
+      title: "System Performance"
+      description: "Ensure the AI system meets specified performance levels."
+
+  inventory-items:
+    # Scientific Metrics (vía Fairlearn/Sklearn)
+    - uuid: "m-fairness-1"
+      description: "Demographic Parity Difference"
+      props:
+        - name: "metric_key"
+          value: "demographic_parity_diff"
+        - name: "threshold"
+          value: "0.10"
+        - name: "operator"
+          value: "<"
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+        - name: "input:dimension"
+          value: "gender"
+          
+    - uuid: "m-performance-1"
+      description: "Accuracy Score"
+      props:
+        - name: "metric_key"
+          value: "accuracy_score"
+        - name: "threshold"
+          value: "0.80"
+        - name: "operator"
+          value: ">="
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+
+  control-implementations:
+    - uuid: "impl-baseline"
+      source: "Venturalitica Baseline"
+      description: "Baseline implementation for standard governance"
+      implemented-requirements:
+        - uuid: "req-f1"
+          control-id: "A.1"
+          description: "Automated check for Demographic Parity"
+          props:
+            - name: "severity"
+              value: "high"
+          links:
+            - href: "#m-fairness-1"
+              rel: "related"
+              
+        - uuid: "req-p1"
+          control-id: "A.2"
+          description: "Automated check for Classification Accuracy"
+          props:
+            - name: "severity"
+              value: "medium"
+          links:
+            - href: "#m-performance-1"
+              rel: "related"

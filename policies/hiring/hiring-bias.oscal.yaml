@@ -1,0 +1,50 @@
+assessment-plan:
+  metadata:
+    title: Recruitment Fairness Policy (Adult Income Proxy)
+    version: "1.1"
+  control-implementations:
+    - description: Demographic Parity Controls
+      implemented-requirements:
+        - control-id: adult-data-bias-1
+          description: "Ensure disparate impact ratio is above 0.8 (80% rule)"
+          props:
+            - name: metric_key
+              value: disparate_impact
+            - name: threshold
+              value: "0.8"
+            - name: operator
+              value: gt
+            - name: "input:target"
+              value: target
+            - name: "input:dimension"
+              value: sex
+        - control-id: adult-fair-1
+          description: "Ensure demographic parity difference between sexes is below 15% (Adult Dataset typical bias is high)"
+          props:
+            - name: metric_key
+              value: demographic_parity_diff
+            - name: threshold
+              value: "0.15"
+            - name: operator
+              value: lt
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
+            - name: "input:protected_attribute"
+              value: protected_attribute
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
+            - name: "input:protected_attribute"
+              value: protected_attribute
+        - control-id: adult-acc-1
+          description: "Maintain minimum F1-score across all demographic groups"
+          props:
+            - name: metric_key
+              value: f1_score
+            - name: threshold
+              value: "0.75"
+            - name: operator
+              value: gt

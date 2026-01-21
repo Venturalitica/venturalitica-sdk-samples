@@ -1,0 +1,33 @@
+assessment-plan:
+  metadata:
+    title: Healthcare Diagnosis Governance (Breast Cancer)
+    version: "1.0"
+  control-implementations:
+    - description: Clinical Safety Controls
+      implemented-requirements:
+        - control-id: cancer-acc-1
+          description: "Maintain minimum F1-score for diagnostic accuracy"
+          props:
+            - name: metric_key
+              value: f1_score
+            - name: threshold
+              value: "0.9"
+            - name: operator
+              value: gt
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
+        - control-id: cancer-recall-1
+          description: "Ensure high recall to minimize false negatives in diagnosis"
+          props:
+            - name: metric_key
+              value: recall_score
+            - name: threshold
+              value: "0.95"
+            - name: operator
+              value: gt
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction

@@ -1,0 +1,87 @@
+assessment-plan:
+  metadata:
+    title: Credit Risk Assessment Policy (German Credit)
+    version: "1.1"
+  control-implementations:
+    - description: Credit Scoring Fairness Controls
+      implemented-requirements:
+        - control-id: credit-data-imbalance
+          description: "Data Quality: Minority class (rejected loans) should represent at least 20% of the dataset to avoid biased training due to severe Class Imbalance."
+          props:
+            - name: metric_key
+              value: class_imbalance
+            - name: threshold
+              value: "0.2"
+            - name: operator
+              value: gt
+            - name: "input:target"
+              value: target
+        - control-id: credit-data-bias
+          description: "Pre-training Fairness: Disparate impact ratio should follow the standard '80% Rule' (Four-Fifths Rule), ensuring favorable loan outcomes are representative across groups."
+          props:
+            - name: metric_key
+              value: disparate_impact
+            - name: threshold
+              value: "0.8"
+            - name: operator
+              value: gt
+            - name: "input:target"
+              value: target
+            - name: "input:dimension"
+              value: gender
+        - control-id: credit-fair-1
+          description: "Fairness Audit: Demographic Parity Difference must be under 10%, ensuring gender-neutral model predictions regardless of historical bias."
+          props:
+            - name: metric_key
+              value: demographic_parity_diff
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: lt
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
+            - name: "input:dimension"
+              value: gender
+        - control-id: credit-age-bias
+          description: "Generational Bias Audit: Demographic parity for age groups (Binned) to detect discrimination against specific age cohorts."
+          props:
+            - name: metric_key
+              value: demographic_parity_diff
+            - name: threshold
+              value: "0.15"
+            - name: operator
+              value: lt
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
+            - name: "input:dimension"
+              value: age_group
+        - control-id: credit-age-disparate
+          description: "Disparate impact ratio for raw age (Proxy for seniority)"
+          props:
+            - name: metric_key
+              value: disparate_impact
+            - name: threshold
+              value: "0.50"
+            - name: operator
+              value: gt
+            - name: "input:target"
+              value: target
+            - name: "input:dimension"
+              value: age
+        - control-id: credit-acc-1
+          description: "Minimum recall for 'good' credit classification"
+          props:
+            - name: metric_key
+              value: recall_score
+            - name: threshold
+              value: "0.80"
+            - name: operator
+              value: gt
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
