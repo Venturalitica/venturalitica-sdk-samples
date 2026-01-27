@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Venturalítica
+.venturalitica/
+trace.json
+trace_latest.json
+compliance_report.md
+compliance_badge.svg
+pipeline_report.md
+governance_report.md
+generated_docs/
+Annex_IV_*.pdf
+Annex_IV_*.md
+
+# MLOps
+mlruns/
+wandb/
+.wandb/
+metrics.json
+eval_results.json
+checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Datasets (Assume large files unless specified)
+datasets/*.csv
+!datasets/sample.csv
+*.parquet
+*.h5
+*.pkl
+
+# Logs
+*.log

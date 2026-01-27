@@ -1,0 +1,20 @@
+assessment-plan:
+  metadata:
+    title: Recruitment Data Quality Policy
+    version: "1.1"
+  control-implementations:
+    - description: Pre-training Data Bias Controls
+      implemented-requirements:
+        - control-id: adult-data-bias-1
+          description: "Ensure disparate impact ratio is above 0.8 (80% rule)"
+          props:
+            - name: metric_key
+              value: disparate_impact
+            - name: threshold
+              value: "0.8"
+            - name: operator
+              value: gt
+            - name: "input:target"
+              value: target
+            - name: "input:dimension"
+              value: sex

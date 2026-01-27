@@ -1,0 +1,383 @@
+# Venturalitica Enhanced Governance Policy: Loan Scenario
+# Use this policy to demonstrate alternative fairness and privacy metrics
+
+catalog:
+  uuid: "governance-enhanced-loan"
+  metadata:
+    title: "Venturalitica Enhanced Governance (Loan Scenario)"
+    version: "2.0"
+    description: |
+      This policy extends the baseline with alternative fairness metrics (Equalized Odds,
+      Predictive Parity) and privacy metrics (k-anonymity, l-diversity) to provide
+      comprehensive fairness and privacy auditing beyond traditional Demographic Parity.
+    
+    responsible-parties:
+      - uuid: "rp-fairness"
+        party-uuid: "org-venturalitica"
+        role-id: "fairness-lead"
+      - uuid: "rp-privacy"
+        party-uuid: "org-venturalitica"
+        role-id: "privacy-lead"
+
+  controls:
+    - id: "A.1"
+      title: "Fairness - Primary Controls"
+      description: "Traditional fairness metrics (Demographic Parity, Equal Opportunity)"
+      
+    - id: "A.1.ALT"
+      title: "Fairness - Alternative Controls"
+      description: "Enhanced fairness metrics (Equalized Odds, Predictive Parity)"
+      
+    - id: "B.1"
+      title: "Privacy Controls"
+      description: "Privacy-preserving metrics (k-anonymity, l-diversity, t-closeness)"
+      
+    - id: "C.1"
+      title: "Performance Controls"
+      description: "Model performance and data quality metrics"
+
+  inventory-items:
+    # FAIRNESS: Primary (Traditional)
+    - uuid: "m-fairness-dpdiff"
+      description: "Demographic Parity Difference"
+      props:
+        - name: "metric_key"
+          value: "demographic_parity_diff"
+        - name: "threshold"
+          value: "0.10"
+        - name: "operator"
+          value: "<"
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+        - name: "input:dimension"
+          value: "gender"
+        - name: "reference"
+          value: "https://fairlearn.org/v0.8/user_guide/fairness_metrics/index.html"
+        - name: "paper_reference"
+          value: "Dwork et al. 2012"
+        
+    - uuid: "m-fairness-eqopp"
+      description: "Equal Opportunity Difference (TPR Parity)"
+      props:
+        - name: "metric_key"
+          value: "equal_opportunity_diff"
+        - name: "threshold"
+          value: "0.15"
+        - name: "operator"
+          value: "<"
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+        - name: "input:dimension"
+          value: "gender"
+        - name: "reference"
+          value: "https://fairlearn.org/"
+        - name: "paper_reference"
+          value: "Hardt et al. 2016"
+
+    # FAIRNESS: Alternative Metrics
+    - uuid: "m-fairness-eqodds"
+      description: "Equalized Odds Ratio (TPR + FPR Parity)"
+      props:
+        - name: "metric_key"
+          value: "equalized_odds_ratio"
+        - name: "threshold"
+          value: "0.20"
+        - name: "operator"
+          value: "<"
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+        - name: "input:dimension"
+          value: "gender"
+        - name: "reference"
+          value: "https://arxiv.org/abs/1610.02413"
+        - name: "paper_reference"
+          value: "Hardt et al. 2016 - Equalized Odds"
+        - name: "interpretation"
+          value: "Combined TPR and FPR parity. Lower is better. Stricter than Equal Opportunity."
+    
+    - uuid: "m-fairness-predparity"
+      description: "Predictive Parity (Precision Parity)"
+      props:
+        - name: "metric_key"
+          value: "predictive_parity"
+        - name: "threshold"
+          value: "0.12"
+        - name: "operator"
+          value: "<"
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+        - name: "input:dimension"
+          value: "gender"
+        - name: "reference"
+          value: "https://en.wikipedia.org/wiki/Fairness_(machine_learning)#Predictive_parity"
+        - name: "paper_reference"
+          value: "Corbett-Davies et al. 2017"
+        - name: "interpretation"
+          value: "Precision parity across groups. Critical for loan/hiring scenarios."
+
+    # PRIVACY METRICS
+    - uuid: "m-privacy-kanon"
+      description: "k-Anonymity"
+      props:
+        - name: "metric_key"
+          value: "k_anonymity"
+        - name: "threshold"
+          value: "5"
+        - name: "operator"
+          value: ">="
+        - name: "input:quasi_identifiers"
+          value: "['age', 'gender', 'job']"
+        - name: "reference"
+          value: "https://en.wikipedia.org/wiki/K-anonymity"
+        - name: "paper_reference"
+          value: "Sweeney 2002"
+        - name: "interpretation"
+          value: "Minimum group size. Higher is better. k≥5 GDPR recommended."
+    
+    - uuid: "m-privacy-ldiv"
+      description: "l-Diversity"
+      props:
+        - name: "metric_key"
+          value: "l_diversity"
+        - name: "threshold"
+          value: "2"
+        - name: "operator"
+          value: ">="
+        - name: "input:quasi_identifiers"
+          value: "['age', 'gender', 'job']"
+        - name: "input:sensitive_attribute"
+          value: "income"
+        - name: "reference"
+          value: "https://en.wikipedia.org/wiki/L-diversity"
+        - name: "paper_reference"
+          value: "Machanavajjhala et al. 2006"
+        - name: "interpretation"
+          value: "Distinct values per QI group. Prevents attribute disclosure."
+    
+    - uuid: "m-privacy-tcloseness"
+      description: "t-Closeness"
+      props:
+        - name: "metric_key"
+          value: "t_closeness"
+        - name: "threshold"
+          value: "0.15"
+        - name: "operator"
+          value: "<"
+        - name: "input:quasi_identifiers"
+          value: "['age', 'gender', 'job']"
+        - name: "input:sensitive_attribute"
+          value: "income"
+        - name: "reference"
+          value: "https://en.wikipedia.org/wiki/T-closeness"
+        - name: "paper_reference"
+          value: "Li et al. 2007"
+        - name: "interpretation"
+          value: "Distribution distance (EMD). Lower is better. Prevents inference attacks."
+    
+    - uuid: "m-privacy-mindata"
+      description: "Data Minimization (GDPR Art. 5)"
+      props:
+        - name: "metric_key"
+          value: "data_minimization"
+        - name: "threshold"
+          value: "0.70"
+        - name: "operator"
+          value: ">"
+        - name: "input:sensitive_columns"
+          value: "['age', 'income', 'job', 'credit_history']"
+        - name: "reference"
+          value: "https://gdpr-info.eu/art-5-gdpr/"
+        - name: "paper_reference"
+          value: "GDPR Article 5(1)(c)"
+        - name: "interpretation"
+          value: "Proportion of non-sensitive columns. Higher is better. Measures data collection minimization."
+
+    # PERFORMANCE METRICS
+    - uuid: "m-performance-accuracy"
+      description: "Classification Accuracy"
+      props:
+        - name: "metric_key"
+          value: "accuracy_score"
+        - name: "threshold"
+          value: "0.80"
+        - name: "operator"
+          value: ">="
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+    
+    - uuid: "m-performance-precision"
+      description: "Precision (Positive Predictive Value)"
+      props:
+        - name: "metric_key"
+          value: "precision_score"
+        - name: "threshold"
+          value: "0.75"
+        - name: "operator"
+          value: ">="
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+    
+    - uuid: "m-performance-recall"
+      description: "Recall (True Positive Rate)"
+      props:
+        - name: "metric_key"
+          value: "recall_score"
+        - name: "threshold"
+          value: "0.75"
+        - name: "operator"
+          value: ">="
+        - name: "input:target"
+          value: "target"
+        - name: "input:prediction"
+          value: "prediction"
+
+  control-implementations:
+    - uuid: "impl-enhanced"
+      source: "Venturalitica Enhanced"
+      description: "Enhanced implementation with alternative fairness and privacy metrics"
+      implemented-requirements:
+        # FAIRNESS: Primary
+        - uuid: "req-f-primary"
+          control-id: "A.1"
+          description: "Traditional Fairness Controls"
+          implemented-requirements:
+            - uuid: "req-f-dpdiff"
+              control-id: "A.1"
+              description: "Demographic Parity Difference (baseline)"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-fairness-dpdiff"
+                  rel: "related"
+            
+            - uuid: "req-f-eqopp"
+              control-id: "A.1"
+              description: "Equal Opportunity (TPR Parity)"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-fairness-eqopp"
+                  rel: "related"
+        
+        # FAIRNESS: Alternative
+        - uuid: "req-f-alt"
+          control-id: "A.1.ALT"
+          description: "Alternative Fairness Controls"
+          implemented-requirements:
+            - uuid: "req-f-eqodds"
+              control-id: "A.1.ALT"
+              description: "Equalized Odds (TPR + FPR Parity) - Stricter than Equal Opportunity"
+              props:
+                - name: "severity"
+                  value: "high"
+                - name: "rationale"
+                  value: "Combines TPR and FPR parity for comprehensive fairness evaluation"
+              links:
+                - href: "#m-fairness-eqodds"
+                  rel: "related"
+            
+            - uuid: "req-f-predparity"
+              control-id: "A.1.ALT"
+              description: "Predictive Parity (Precision Parity) - Critical for loan/hiring"
+              props:
+                - name: "severity"
+                  value: "high"
+                - name: "rationale"
+                  value: "Ensures positive predictions are equally likely to be correct across groups"
+              links:
+                - href: "#m-fairness-predparity"
+                  rel: "related"
+        
+        # PRIVACY
+        - uuid: "req-privacy"
+          control-id: "B.1"
+          description: "Privacy-Preserving Controls"
+          implemented-requirements:
+            - uuid: "req-priv-kanon"
+              control-id: "B.1"
+              description: "k-Anonymity (Minimum group size protection)"
+              props:
+                - name: "severity"
+                  value: "medium"
+              links:
+                - href: "#m-privacy-kanon"
+                  rel: "related"
+            
+            - uuid: "req-priv-ldiv"
+              control-id: "B.1"
+              description: "l-Diversity (Attribute disclosure prevention)"
+              props:
+                - name: "severity"
+                  value: "medium"
+              links:
+                - href: "#m-privacy-ldiv"
+                  rel: "related"
+            
+            - uuid: "req-priv-tcloseness"
+              control-id: "B.1"
+              description: "t-Closeness (Inference attack prevention)"
+              props:
+                - name: "severity"
+                  value: "medium"
+              links:
+                - href: "#m-privacy-tcloseness"
+                  rel: "related"
+            
+            - uuid: "req-priv-mindata"
+              control-id: "B.1"
+              description: "Data Minimization (GDPR Article 5)"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-privacy-mindata"
+                  rel: "related"
+        
+        # PERFORMANCE
+        - uuid: "req-perf"
+          control-id: "C.1"
+          description: "Performance Controls"
+          implemented-requirements:
+            - uuid: "req-perf-accuracy"
+              control-id: "C.1"
+              description: "Model Accuracy Minimum"
+              props:
+                - name: "severity"
+                  value: "medium"
+              links:
+                - href: "#m-performance-accuracy"
+                  rel: "related"
+            
+            - uuid: "req-perf-precision"
+              control-id: "C.1"
+              description: "Precision Minimum"
+              props:
+                - name: "severity"
+                  value: "medium"
+              links:
+                - href: "#m-performance-precision"
+                  rel: "related"
+            
+            - uuid: "req-perf-recall"
+              control-id: "C.1"
+              description: "Recall Minimum"
+              props:
+                - name: "severity"
+                  value: "medium"
+              links:
+                - href: "#m-performance-recall"
+                  rel: "related"

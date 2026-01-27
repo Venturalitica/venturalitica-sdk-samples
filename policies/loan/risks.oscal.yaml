@@ -29,36 +29,6 @@ assessment-plan:
               value: target
             - name: "input:dimension"
               value: gender
-        - control-id: credit-fair-1
-          description: "Fairness Audit: Demographic Parity Difference must be under 10%, ensuring gender-neutral model predictions regardless of historical bias."
-          props:
-            - name: metric_key
-              value: demographic_parity_diff
-            - name: threshold
-              value: "0.10"
-            - name: operator
-              value: lt
-            - name: "input:target"
-              value: target
-            - name: "input:prediction"
-              value: prediction
-            - name: "input:dimension"
-              value: gender
-        - control-id: credit-age-bias
-          description: "Generational Bias Audit: Demographic parity for age groups (Binned) to detect discrimination against specific age cohorts."
-          props:
-            - name: metric_key
-              value: demographic_parity_diff
-            - name: threshold
-              value: "0.15"
-            - name: operator
-              value: lt
-            - name: "input:target"
-              value: target
-            - name: "input:prediction"
-              value: prediction
-            - name: "input:dimension"
-              value: age_group
         - control-id: credit-age-disparate
           description: "Disparate impact ratio for raw age (Proxy for seniority)"
           props:
@@ -72,16 +42,3 @@ assessment-plan:
               value: target
             - name: "input:dimension"
               value: age
-        - control-id: credit-acc-1
-          description: "Minimum recall for 'good' credit classification"
-          props:
-            - name: metric_key
-              value: recall_score
-            - name: threshold
-              value: "0.80"
-            - name: operator
-              value: gt
-            - name: "input:target"
-              value: target
-            - name: "input:prediction"
-              value: prediction

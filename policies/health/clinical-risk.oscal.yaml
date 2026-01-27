@@ -31,3 +31,18 @@ assessment-plan:
               value: target
             - name: "input:prediction"
               value: prediction
+        - control-id: health-equity-1
+          description: "Ensure consistent diagnosis quality (Recall) across sexes"
+          props:
+            - name: metric_key
+              value: equal_opportunity_diff
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: lt
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
+            - name: "input:dimension"
+              value: sex

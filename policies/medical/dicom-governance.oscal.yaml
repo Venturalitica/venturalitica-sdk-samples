@@ -1,0 +1,59 @@
+assessment-plan:
+  uuid: 2b3d8c90-medical-dicom-governance
+  metadata:
+    title: "Medical DICOM Governance Policy"
+    last-modified: "2026-01-22"
+    description: "AI Fairness in Medical Imaging (FAIMI) inspired governance for spine metastasis segmentation"
+  control-implementations:
+    - description: "DICOM metadata distribution and fairness controls (FAIMI framework)"
+      implemented-requirements:
+        - control-id: medical.class_imbalance
+          description: "Data Quality: Balance of High vs Low ImageCount series should be above 0.20."
+          props:
+            - name: metric_key
+              value: class_imbalance
+            - name: threshold
+              value: "0.20"
+            - name: operator
+              value: ">="
+            - name: "input:target"
+              value: target
+        - control-id: medical.disparate_impact_sex
+          description: "Equity: Disparate impact ratio of High Resolution (ImageCount) across sex groups should be >= 0.80."
+          props:
+            - name: metric_key
+              value: disparate_impact
+            - name: threshold
+              value: "0.80"
+            - name: operator
+              value: ">="
+            - name: "input:target"
+              value: target
+            - name: "input:dimension"
+              value: sex
+        - control-id: medical.disparate_impact_manufacturer
+          description: "Equity: Disparate impact ratio of High Resolution across manufacturers should be >= 0.70."
+          props:
+            - name: metric_key
+              value: disparate_impact
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">="
+            - name: "input:target"
+              value: target
+            - name: "input:dimension"
+              value: manufacturer
+        - control-id: medical.disparate_impact_subgroup
+          description: "Subgroup Equity: Disparate impact across intersectional subgroups (sex+manufacturer) should be >= 0.60."
+          props:
+            - name: metric_key
+              value: disparate_impact
+            - name: threshold
+              value: "0.60"
+            - name: operator
+              value: ">="
+            - name: "input:target"
+              value: target
+            - name: "input:dimension"
+              value: subgroup

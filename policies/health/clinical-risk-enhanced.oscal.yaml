@@ -1,0 +1,282 @@
+# Venturalitica Enhanced Governance Policy: Health Scenario
+# Focuses on privacy and fairness for clinical data
+
+catalog:
+  uuid: "governance-enhanced-health"
+  metadata:
+    title: "Clinical Risk Prediction Governance - Enhanced"
+    version: "2.0"
+    description: |
+      Health data requires strict privacy protection (HIPAA, GDPR) combined with
+      fairness to ensure equitable diagnosis and treatment recommendations across
+      demographic groups. This policy emphasizes k-anonymity, l-diversity, and
+      fairness metrics critical for clinical decision-making.
+    
+    responsible-parties:
+      - uuid: "rp-health-privacy"
+        role-id: "chief-privacy-officer"
+        org: "Healthcare Provider"
+      - uuid: "rp-health-fairness"
+        role-id: "chief-medical-officer"
+        org: "Healthcare Provider"
+
+  controls:
+    - id: "HEALTH-PRIVACY"
+      title: "Health Data Privacy Protection"
+      description: "HIPAA/GDPR compliance for clinical data"
+      
+    - id: "HEALTH-FAIRNESS"
+      title: "Clinical Fairness Controls"
+      description: "Equitable diagnosis and treatment recommendations"
+      
+    - id: "HEALTH-PERFORMANCE"
+      title: "Clinical Performance Controls"
+      description: "Diagnostic accuracy and recall minimums"
+
+  inventory-items:
+    # PRIVACY: Critical for health data
+    - uuid: "m-health-kanon"
+      description: "k-Anonymity for Clinical Records"
+      props:
+        - name: "metric_key"
+          value: "k_anonymity"
+        - name: "threshold"
+          value: "8"
+        - name: "operator"
+          value: ">="
+        - name: "input:quasi_identifiers"
+          value: "['age', 'gender', 'postcode']"
+        - name: "severity"
+          value: "critical"
+        - name: "standard"
+          value: "HIPAA § 164.502(b), GDPR Art. 32"
+        - name: "rationale"
+          value: "k≥8 ensures clinical records cannot be easily re-identified. HIPAA Safe Harbor alternative."
+    
+    - uuid: "m-health-ldiv"
+      description: "l-Diversity for Sensitive Clinical Attributes"
+      props:
+        - name: "metric_key"
+          value: "l_diversity"
+        - name: "threshold"
+          value: "3"
+        - name: "operator"
+          value: ">="
+        - name: "input:quasi_identifiers"
+          value: "['age', 'gender']"
+        - name: "input:sensitive_attribute"
+          value: "diagnosis"
+        - name: "severity"
+          value: "high"
+        - name: "standard"
+          value: "HIPAA Privacy Rule"
+        - name: "rationale"
+          value: "Prevents attribute disclosure: if attacker knows age+gender, they can't infer diagnosis."
+    
+    - uuid: "m-health-tcloseness"
+      description: "t-Closeness for Lab Results Distribution"
+      props:
+        - name: "metric_key"
+          value: "t_closeness"
+        - name: "threshold"
+          value: "0.10"
+        - name: "operator"
+          value: "<"
+        - name: "input:quasi_identifiers"
+          value: "['age', 'gender']"
+        - name: "input:sensitive_attribute"
+          value: "lab_result"
+        - name: "severity"
+          value: "high"
+        - name: "rationale"
+          value: "Protects against inference attacks on continuous lab values."
+
+    # FAIRNESS: Clinical
+    - uuid: "m-health-eqopp"
+      description: "Equal Opportunity for Diagnosis Across Racial Groups"
+      props:
+        - name: "metric_key"
+          value: "equal_opportunity_diff"
+        - name: "threshold"
+          value: "0.10"
+        - name: "operator"
+          value: "<"
+        - name: "input:target"
+          value: "true_diagnosis"
+        - name: "input:prediction"
+          value: "predicted_diagnosis"
+        - name: "input:dimension"
+          value: "race"
+        - name: "severity"
+          value: "high"
+        - name: "rationale"
+          value: "TPR should be equal across racial groups: patients with condition should have 
+                   equal probability of being correctly diagnosed regardless of race."
+    
+    - uuid: "m-health-eqodds"
+      description: "Equalized Odds for Diagnosis Prediction"
+      props:
+        - name: "metric_key"
+          value: "equalized_odds_ratio"
+        - name: "threshold"
+          value: "0.15"
+        - name: "operator"
+          value: "<"
+        - name: "input:target"
+          value: "true_diagnosis"
+        - name: "input:prediction"
+          value: "predicted_diagnosis"
+        - name: "input:dimension"
+          value: "race"
+        - name: "severity"
+          value: "high"
+        - name: "rationale"
+          value: "Combined TPR and FPR parity ensures both equal opportunity for true positives
+                   and equal protection from false positives."
+    
+    - uuid: "m-health-predparity"
+      description: "Predictive Parity for Positive Predictions"
+      props:
+        - name: "metric_key"
+          value: "predictive_parity"
+        - name: "threshold"
+          value: "0.12"
+        - name: "operator"
+          value: "<"
+        - name: "input:target"
+          value: "true_diagnosis"
+        - name: "input:prediction"
+          value: "predicted_diagnosis"
+        - name: "input:dimension"
+          value: "race"
+        - name: "severity"
+          value: "high"
+        - name: "rationale"
+          value: "Precision parity: if we predict a patient has condition, probability of 
+                   being correct should be equal across racial groups."
+
+    # PERFORMANCE
+    - uuid: "m-health-recall"
+      description: "Recall (Sensitivity) for Diagnostic Accuracy"
+      props:
+        - name: "metric_key"
+          value: "recall_score"
+        - name: "threshold"
+          value: "0.90"
+        - name: "operator"
+          value: ">="
+        - name: "input:target"
+          value: "true_diagnosis"
+        - name: "input:prediction"
+          value: "predicted_diagnosis"
+        - name: "severity"
+          value: "critical"
+        - name: "rationale"
+          value: "Critical in health: missing true positives (false negatives) is dangerous."
+    
+    - uuid: "m-health-precision"
+      description: "Precision for Diagnostic Specificity"
+      props:
+        - name: "metric_key"
+          value: "precision_score"
+        - name: "threshold"
+          value: "0.85"
+        - name: "operator"
+          value: ">="
+        - name: "input:target"
+          value: "true_diagnosis"
+        - name: "input:prediction"
+          value: "predicted_diagnosis"
+        - name: "severity"
+          value: "high"
+        - name: "rationale"
+          value: "False positives are also costly: unnecessary treatment, patient anxiety."
+
+  control-implementations:
+    - uuid: "impl-health-enhanced"
+      source: "Venturalitica Health Enhanced"
+      description: "Enhanced implementation for clinical data with privacy and fairness focus"
+      implemented-requirements:
+        - uuid: "req-health-privacy"
+          control-id: "HEALTH-PRIVACY"
+          description: "Privacy Protection Controls"
+          implemented-requirements:
+            - uuid: "req-health-kanon"
+              description: "k-Anonymity Check"
+              props:
+                - name: "severity"
+                  value: "critical"
+              links:
+                - href: "#m-health-kanon"
+                  rel: "related"
+            
+            - uuid: "req-health-ldiv"
+              description: "l-Diversity Check"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-health-ldiv"
+                  rel: "related"
+            
+            - uuid: "req-health-tcloseness"
+              description: "t-Closeness Check"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-health-tcloseness"
+                  rel: "related"
+        
+        - uuid: "req-health-fairness"
+          control-id: "HEALTH-FAIRNESS"
+          description: "Clinical Fairness Controls"
+          implemented-requirements:
+            - uuid: "req-health-eqopp"
+              description: "Equal Opportunity for Diagnosis"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-health-eqopp"
+                  rel: "related"
+            
+            - uuid: "req-health-eqodds"
+              description: "Equalized Odds"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-health-eqodds"
+                  rel: "related"
+            
+            - uuid: "req-health-predparity"
+              description: "Predictive Parity"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-health-predparity"
+                  rel: "related"
+        
+        - uuid: "req-health-performance"
+          control-id: "HEALTH-PERFORMANCE"
+          description: "Diagnostic Performance"
+          implemented-requirements:
+            - uuid: "req-health-recall"
+              description: "Minimum Recall (Sensitivity)"
+              props:
+                - name: "severity"
+                  value: "critical"
+              links:
+                - href: "#m-health-recall"
+                  rel: "related"
+            
+            - uuid: "req-health-precision"
+              description: "Minimum Precision (Specificity)"
+              props:
+                - name: "severity"
+                  value: "high"
+              links:
+                - href: "#m-health-precision"
+                  rel: "related"

@@ -1,0 +1,21 @@
+[project]
+name = "vision-fairness"
+version = "0.1.0"
+description = "Venturalitica vision scenario with FairFace streaming via HuggingFace Datasets"
+requires-python = ">=3.11"
+dependencies = [
+  "datasets>=2.14.0",
+  "pillow>=9.0.0",
+  "transformers>=4.44.0",
+  "huggingface-hub>=0.23.0",
+  "torch>=2.2.0; platform_system != 'Windows'",
+  "torchvision>=0.17.0",
+  "mlflow>=2.0.0",
+  "pytorch-lightning>=2.1.0",
+  "wandb>=0.16.0",
+  "python-dotenv>=1.0.0",
+  "venturalitica>=0.4.0",
+]
+
+[tool.uv.sources]
+venturalitica = { path = "../../../packages/venturalitica-sdk", editable = true }

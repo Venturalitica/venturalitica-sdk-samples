@@ -1,0 +1,29 @@
+[project]
+name = "venturalitica-sdk-samples"
+version = "1.0.0"
+description = "Production-ready examples of AI governance with Venturalitica SDK"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Venturalitica Community", email = "community@venturalitica.ai" }
+]
+license = { text = "Apache-2.0" }
+dependencies = [
+    "venturalitica==0.3.0",
+    "mlflow",
+    "wandb",
+    "scikit-learn",
+    "pandas",
+    "numpy",
+    "joblib"
+]
+
+[tool.uv]
+dev-dependencies = []
+
+[tool.uv.sources]
+venturalitica = { path = "../../packages/venturalitica-sdk", editable = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

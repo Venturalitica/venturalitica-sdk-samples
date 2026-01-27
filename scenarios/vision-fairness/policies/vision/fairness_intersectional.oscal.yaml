@@ -1,0 +1,43 @@
+
+catalog:
+  uuid: vision-fairness-intersectional-v1
+  metadata:
+    title: "Vision Fairness Policy (Intersectional)"
+    version: "1.0"
+    oscal-version: "1.0.0"
+
+  controls:
+    - id: vision-fairness-intersectional-01
+      title: "Fairness in Computer Vision (Intersectional)"
+      
+      controls:
+        # Race x Gender Parity
+        - id: fairface-race-gender-parity
+          title: "Intersectional Demographic Parity"
+          description: "Demographic Parity across Race x Gender Intersections must be < 25%"
+          props:
+            - name: metric_key
+              value: multiclass_demographic_parity
+            - name: input:dimension
+              value: intersectional_group
+            - name: input:strategy
+              value: macro
+            - name: threshold
+              value: "0.25"
+            - name: operator
+              value: "<"
+
+        - id: fairface-race-gender-predictive
+          title: "Intersectional Predictive Parity"
+          description: "Predictive Parity across Race x Gender Intersections must be < 25%"
+          props:
+            - name: metric_key
+              value: predictive_parity
+            - name: input:dimension
+              value: intersectional_group
+            - name: input:strategy
+              value: macro
+            - name: threshold
+              value: "0.25"
+            - name: operator
+              value: "<"

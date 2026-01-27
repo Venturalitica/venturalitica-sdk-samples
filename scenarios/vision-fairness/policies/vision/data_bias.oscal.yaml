@@ -1,0 +1,70 @@
+catalog:
+  uuid: vision-data-bias-v1
+  metadata:
+    title: "Vision Data Bias Policy (Article 10)"
+    version: "1.0"
+    oscal-version: "1.0.0"
+
+  controls:
+    - id: vision-data-quality-01
+      title: "Data Quality & Bias (Article 10)"
+      
+      controls:
+        # Class Balance
+        - id: fairface-class-balance
+          title: "Target Class Balance"
+          description: "Target class imbalance ratio must be greater than 0.4"
+          props:
+            - name: metric_key
+              value: class_imbalance
+            - name: input:target
+              value: target
+            - name: threshold
+              value: "0.4"
+            - name: operator
+              value: ">"
+
+        # Race Representation
+        - id: fairface-race-representation
+          title: "Minimum Race Representation"
+          description: "Minority racial group must represent at least 5% of dataset"
+          props:
+            - name: metric_key
+              value: k_anonymity # Using k-anonymity as a proxy for min group size in this context, or better: Simpson's index if available, but staying safe with k-anonymity for now or check if there is a 'min_group_ratio' metric. Checking metrics init showed 'class_imbalance' and 'disparate_impact'. 
+              # Let's stick to what we saw in metrics/__init__.py 
+              # dict_keys(['accuracy_score', ..., 'disparate_impact', 'class_imbalance', ...])
+              # Actually, disparate_impact on GROUND TRUTH is a good proxy for data bias. 
+              # But let's look for representation. 
+              # Core metrics didn't show explicit 'min_group_size'.
+              # I will use 'disparate_impact' (Ratio) as a proxy for representation balance between groups?
+              # Or I can use 'class_imbalance' but applied to the dimension? 
+              # Let's check metrics.py definitions again if needed.
+              # For now, I'll use 'class_imbalance' on target for the first control.
+              # For representation, if I don't have a direct metric, I might skip or use 'disparate_impact' of y=1 across groups? 
+              # Wait, 'disparate_impact' is P(Y=1|A) / P(Y=1|B). This is label bias, not population bias.
+              # Let's look at the file content of fairness/metrics.py again or quality/metrics.py.
+              # I'll create the file with 'class_imbalance' first and 'disparate_impact' as placeholders, then verify available metrics.
+              # Actually, I recall 'class_imbalance' in quality/metrics.py.
+              
+              value: class_imbalance 
+              # This usually takes 'target'. If I map 'target' to 'race', it calculates imbalance of race classes!
+            - name: input:target
+              value: race # Trick: Treat race as target to check balance
+            - name: threshold
+              value: "0.12" # Ratio min/max > 0.12 (closer to 1/7 target)
+            - name: operator
+              value: ">"
+
+        # Gender Representation
+        - id: fairface-gender-representation
+          title: "Minimum Gender Representation"
+          description: "Gender imbalance ratio must be greater than 0.8"
+          props:
+            - name: metric_key
+              value: class_imbalance
+            - name: input:target
+              value: gender # Trick: Treat gender as target
+            - name: threshold
+              value: "0.8"
+            - name: operator
+              value: ">"

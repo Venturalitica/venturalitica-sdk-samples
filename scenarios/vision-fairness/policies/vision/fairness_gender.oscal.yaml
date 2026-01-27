@@ -1,0 +1,101 @@
+catalog:
+  uuid: vision-fairness-v1
+  metadata:
+    title: "Vision Fairness Policy (FairFace)"
+    version: "1.0"
+    oscal-version: "1.0.0"
+
+  controls:
+    - id: vision-fairness-01
+      title: "Fairness in Computer Vision"
+      
+      controls:
+        # Gender Fairness
+        # Note: Gender Demographic Parity on a Gender Model with Gender Grouping is tautological (1.0 - 0.0).
+        # We keep "Equal Opportunity" (Recall Parity) as the main check.
+
+        # Equal Opportunity (TPR Parity) - Research Standard
+        - id: fairface-gender-opportunity
+          title: "Gender Equal Opportunity"
+          description: "True Positive Rate (Recall) difference between Genders must be < 10%"
+          props:
+            - name: metric_key
+              value: equal_opportunity_diff
+            - name: input:dimension
+              value: gender
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: "<"
+
+        # Predictive Equality (FPR Parity)
+        - id: fairface-gender-predictive-equality
+          title: "Gender Predictive Equality"
+          description: "False Positive Rate difference between Genders must be < 10%"
+          props:
+            - name: metric_key
+              value: predictive_equality_diff
+            - name: input:dimension
+              value: gender
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: "<"
+
+            - name: operator
+              value: ">"
+
+        # ----------------------------------------------------------------------
+        # PERFORMANCE AND RELIABILITY (PER TASK)
+        # ----------------------------------------------------------------------
+        
+        # --- GENDER TASK ---
+        - id: perf-gender-accuracy
+          title: "Gender Accuracy"
+          description: "Accuracy for Gender classification must be > 70%"
+          props:
+            - name: metric_key
+              value: accuracy_score
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">"
+        
+        - id: perf-gender-precision
+          title: "Gender Precision (Macro)"
+          description: "Macro Precision for Gender must be > 70%"
+          props:
+            - name: metric_key
+              value: precision_score
+            - name: input:average
+              value: macro
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">"
+
+        - id: perf-gender-recall
+          title: "Gender Recall (Macro)"
+          description: "Macro Recall for Gender must be > 70%"
+          props:
+            - name: metric_key
+              value: recall_score
+            - name: input:average
+              value: macro
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">"
+
+        - id: perf-gender-f1
+          title: "Gender F1 Score (Macro)"
+          description: "Macro F1 Score for Gender must be > 70%"
+          props:
+            - name: metric_key
+              value: f1_score
+            - name: input:average
+              value: macro
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">"

@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Generated Reports & Evidence (Privacy)
+whitepaper.md
+compliance_report.md
+compliance_report_sdk.md
+evaluation_results.csv
+cohort_results.csv
+trusted_metadata.csv
+*.log
+eval_log*.txt
+
+# Generated Plots & Images
+compliance_plots/
+debug_outputs/
+
+# Large Models & Data
+models/
+*.nii.gz
+*.dcm
+
+# Venturalitica Internals
+.venturalitica/
+trace*.json
+*.egg-info/

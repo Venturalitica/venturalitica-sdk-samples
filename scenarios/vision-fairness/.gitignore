@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# ML Artifacts (Large Files)
+mlruns/
+mlflow.db
+wandb/
+checkpoints/
+datasets/
+*.pth
+*.pdf
+
+# Generated Reports & Evidence (Privacy)
+whitepaper.md
+compliance_report.md
+*.log
+
+# Venturalitica Internals
+.venturalitica/
+trace*.json
+*.egg-info/
+Karkkainen_FairFace_Face_Attribute_Dataset_for_Balanced_Race_Gender_and_Age_WACV_2021_paper.pdf

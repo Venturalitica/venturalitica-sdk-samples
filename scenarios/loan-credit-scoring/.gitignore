@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Generated Reports & Evidence (Privacy)
+whitepaper.md
+compliance_report.md
+governance_report.md
+pipeline_report.md
+emissions.csv
+*.log
+
+# Venturalitica Internals
+.venturalitica/
+trace*.json
+*.egg-info/
+wandb/

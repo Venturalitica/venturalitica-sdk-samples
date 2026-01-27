@@ -1,0 +1,38 @@
+assessment-plan:
+  uuid: 9e79f0f0-vision-fairness-policy
+  metadata:
+    title: "Computer Vision Fairness Policy"
+    last-modified: "2026-01-21"
+  control-implementations:
+    - description: "Vision fairness controls"
+      implemented-requirements:
+        - control-id: cv.demographic_parity
+          description: "Demographic parity difference across race groups should be below 0.10."
+          props:
+            - name: metric_key
+              value: demographic_parity_diff
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: "<"
+            - name: "input:dimension"
+              value: race
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
+        - control-id: cv.equal_opportunity
+          description: "Equal opportunity difference (TPR gap) across race groups should be below 0.20."
+          props:
+            - name: metric_key
+              value: equal_opportunity_diff
+            - name: threshold
+              value: "0.20"
+            - name: operator
+              value: "<"
+            - name: "input:dimension"
+              value: race
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction

@@ -1,0 +1,31 @@
+[project]
+name = "medical-spine-segmentation"
+version = "0.1.0"
+description = "Evaluation of Spine Segmentation Models with Bias Auditing"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "venturalitica>=0.1.0",
+    "torch>=2.0.0",
+    "monai>=1.3.0",
+    "nibabel>=5.0.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "tqdm>=4.65.0",
+    "scikit-learn>=1.3.0",
+    "pyyaml>=6.0",
+    "transformers>=4.30.0",  # For HF models
+    # "nbiatoolkit>=1.3.0",  # Omitted to avoid conflict; we assume data is already downloaded or download manually
+    "itk>=5.4.5",
+    "pydicom>=3.0.1",
+]
+
+[tool.uv.sources]
+venturalitica = { path = "../../../packages/venturalitica-sdk", editable = true }
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = []

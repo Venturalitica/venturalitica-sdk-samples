@@ -1,0 +1,265 @@
+catalog:
+  uuid: vision-fairness-v1
+  metadata:
+    title: "Vision Fairness Policy (FairFace)"
+    version: "1.0"
+    oscal-version: "1.0.0"
+
+  controls:
+    - id: vision-fairness-01
+      title: "Fairness in Computer Vision"
+      
+      controls:
+        # Race Fairness
+        - id: fairface-race-parity
+          title: "Race Demographic Parity"
+          description: "Demographic Parity across Racial groups must be within 15%"
+          props:
+            - name: metric_key
+              value: demographic_parity_diff
+            - name: input:dimension
+              value: race
+            - name: threshold
+              value: "0.15"
+            - name: operator
+              value: "<"
+        
+        # Gender Fairness
+        - id: fairface-gender-parity
+          title: "Gender Demographic Parity"
+          description: "Demographic Parity across Gender groups must be within 10%"
+          props:
+            - name: metric_key
+              value: demographic_parity_diff
+            - name: input:dimension
+              value: gender
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: "<"
+
+        # Age Fairness (Multi-class)
+        - id: fairface-age-parity
+          title: "Age Demographic Parity"
+          description: "Demographic Parity across Age groups must be within 15%"
+          props:
+            - name: metric_key
+              value: multiclass_demographic_parity
+            - name: input:dimension
+              value: age
+            - name: input:aggregation
+              value: max
+            - name: threshold
+              value: "0.15"
+            - name: operator
+              value: "<"
+
+        # Predictive Parity (Precision Fairness) - Paper Alignment
+        - id: fairface-race-precision-parity
+          title: "Race Predictive Parity"
+          description: "Precision difference between Racial groups must be < 15%"
+          props:
+            - name: metric_key
+              value: predictive_parity
+            - name: input:dimension
+              value: race
+            - name: threshold
+              value: "0.15"
+            - name: operator
+              value: "<"
+
+        - id: fairface-gender-precision-parity
+          title: "Gender Predictive Parity"
+          description: "Precision difference between Gender groups must be < 10%"
+          props:
+            - name: metric_key
+              value: predictive_parity
+            - name: input:dimension
+              value: gender
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: "<"
+
+        - id: fairface-age-precision-parity
+          title: "Age Predictive Parity"
+          description: "Precision difference between Age groups must be < 15%"
+          props:
+            - name: metric_key
+              value: predictive_parity
+            - name: input:dimension
+              value: age
+            - name: threshold
+              value: "0.15"
+            - name: operator
+              value: "<"
+
+        # Equal Opportunity (TPR Parity) - Research Standard
+        - id: fairface-gender-opportunity
+          title: "Gender Equal Opportunity"
+          description: "True Positive Rate (Recall) difference between Genders must be < 10%"
+          props:
+            - name: metric_key
+              value: equal_opportunity_diff
+            - name: input:dimension
+              value: gender
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: "<"
+
+        # Predictive Equality (FPR Parity)
+        - id: fairface-gender-predictive-equality
+          title: "Gender Predictive Equality"
+          description: "False Positive Rate difference between Genders must be < 10%"
+          props:
+            - name: metric_key
+              value: predictive_equality_diff
+            - name: input:dimension
+              value: gender
+            - name: threshold
+              value: "0.10"
+            - name: operator
+              value: "<"
+
+            - name: operator
+              value: ">"
+
+        # ----------------------------------------------------------------------
+        # PERFORMANCE AND RELIABILITY (PER TASK)
+        # ----------------------------------------------------------------------
+        
+        # --- GENDER TASK ---
+        - id: perf-gender-accuracy
+          title: "Gender Accuracy"
+          description: "Accuracy for Gender classification must be > 70%"
+          props:
+            - name: metric_key
+              value: accuracy_score_gender # Computed via custom Key in wrapper or logic
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">"
+        
+        - id: perf-gender-precision
+          title: "Gender Precision (Macro)"
+          description: "Macro Precision for Gender must be > 70%"
+          props:
+            - name: metric_key
+              value: precision_score_gender
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">"
+
+        - id: perf-gender-recall
+          title: "Gender Recall (Macro)"
+          description: "Macro Recall for Gender must be > 70%"
+          props:
+            - name: metric_key
+              value: recall_score_gender
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">"
+
+        - id: perf-gender-f1
+          title: "Gender F1 Score (Macro)"
+          description: "Macro F1 Score for Gender must be > 70%"
+          props:
+            - name: metric_key
+              value: f1_score_gender
+            - name: threshold
+              value: "0.70"
+            - name: operator
+              value: ">"
+
+        # --- RACE TASK ---
+        - id: perf-race-accuracy
+          title: "Race Accuracy"
+          description: "Accuracy for Race classification must be > 60%"
+          props:
+            - name: metric_key
+              value: accuracy_score_race
+            - name: threshold
+              value: "0.60"
+            - name: operator
+              value: ">"
+
+        - id: perf-race-precision
+          title: "Race Precision (Macro)"
+          description: "Macro Precision for Race must be > 60%"
+          props:
+            - name: metric_key
+              value: precision_score_race
+            - name: threshold
+              value: "0.60"
+            - name: operator
+              value: ">"
+
+        - id: perf-race-recall
+          title: "Race Recall (Macro)"
+          description: "Macro Recall for Race must be > 60%"
+          props:
+            - name: metric_key
+              value: recall_score_race
+            - name: threshold
+              value: "0.60"
+            - name: operator
+              value: ">"
+
+        - id: perf-race-f1
+          title: "Race F1 Score (Macro)"
+          description: "Macro F1 Score for Race must be > 60%"
+          props:
+            - name: metric_key
+              value: f1_score_race
+            - name: threshold
+              value: "0.60"
+            - name: operator
+              value: ">"
+
+        # --- AGE TASK ---
+        - id: perf-age-accuracy
+          title: "Age Accuracy"
+          description: "Accuracy for Age classification must be > 50%"
+          props:
+            - name: metric_key
+              value: accuracy_score_age
+            - name: threshold
+              value: "0.50"
+            - name: operator
+              value: ">"
+
+        - id: perf-age-precision
+          title: "Age Precision (Macro)"
+          description: "Macro Precision for Age must be > 50%"
+          props:
+            - name: metric_key
+              value: precision_score_age
+            - name: threshold
+              value: "0.50"
+            - name: operator
+              value: ">"
+
+        - id: perf-age-recall
+          title: "Age Recall (Macro)"
+          description: "Macro Recall for Age must be > 50%"
+          props:
+            - name: metric_key
+              value: recall_score_age
+            - name: threshold
+              value: "0.50"
+            - name: operator
+              value: ">"
+
+        - id: perf-age-f1
+          title: "Age F1 Score (Macro)"
+          description: "Macro F1 Score for Age must be > 50%"
+          props:
+            - name: metric_key
+              value: f1_score_age
+            - name: threshold
+              value: "0.50"
+            - name: operator
+              value: ">"

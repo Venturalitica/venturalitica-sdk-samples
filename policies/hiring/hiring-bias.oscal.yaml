@@ -31,14 +31,8 @@ assessment-plan:
               value: target
             - name: "input:prediction"
               value: prediction
-            - name: "input:protected_attribute"
-              value: protected_attribute
-            - name: "input:target"
-              value: target
-            - name: "input:prediction"
-              value: prediction
-            - name: "input:protected_attribute"
-              value: protected_attribute
+            - name: "input:dimension"
+              value: sex
         - control-id: adult-acc-1
           description: "Maintain minimum F1-score across all demographic groups"
           props:
@@ -48,3 +42,7 @@ assessment-plan:
               value: "0.75"
             - name: operator
               value: gt
+            - name: "input:target"
+              value: target
+            - name: "input:prediction"
+              value: prediction
