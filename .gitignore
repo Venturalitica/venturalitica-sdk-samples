@@ -56,12 +56,16 @@ checkpoints/
 *.swp
 *.swo
 
-# Datasets (Assume large files unless specified)
-datasets/*.csv
-!datasets/sample.csv
-*.parquet
-*.h5
-*.pkl
+# Datasets (Exclude all data by default)
+datasets/
+!datasets/download_datasets.py
+!datasets/download_real_data.py
+!datasets/pyproject.toml
+!datasets/loan/prepare_data.py
+!datasets/vision/prepare_data.py
+
+# Exception for small metadata/samples if needed, but better to generate them
+# !datasets/vision/metadata.csv
 
 # Logs
 *.log

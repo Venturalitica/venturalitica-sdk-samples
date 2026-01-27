@@ -49,7 +49,7 @@ uv run prepare_data.py && uv run 01_governance_audit.py
 
 ## 🛡️ Governance Policy
 
-This scenario uses the [`policies/loan/risks.oscal.yaml`](../../policies/loan/risks.oscal.yaml) policy, which enforces:
+This scenario uses the [`policies/loan/risks.oscal.yaml`](policies/loan/risks.oscal.yaml) policy, which enforces:
 - **Major Class Balance**: Rejection rate must be representative.
 - **Demographic Parity**: Approval rates for men and women must be within 10% delta.
 - **Accuracy Calibration**: Minimum F1-score across all demographic groups.
