@@ -47,9 +47,15 @@ def train_and_evaluate(use_mlflow: bool, use_wandb: bool):
 
     print(f"  ✓ Loaded {len(df)} loan applications")
 
-    # For Level 2, we keep it simple: use only numeric features
-    X = df.select_dtypes(include=['number']).drop(columns=['target'], errors='ignore')
-    y = df['target']
+    # Determine target column (load_sample uses 'class', local CSV might use 'target')
+    target_col = 'class' if 'class' in df.columns else 'target'
+    gender_col = 'Attribute9' if 'Attribute9' in df.columns else 'gender'
+    age_col = 'Attribute13' if 'Attribute13' in df.columns else 'age'
+
+    print(f"  ✓ Using mapping: target={target_col}, gender={gender_col}, age={age_col}")
+
+    X = df.select_dtypes(include=['number']).drop(columns=[target_col], errors='ignore')
+    y = df[target_col]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # 1. SETUP MLFLOW
@@ -80,13 +86,13 @@ def train_and_evaluate(use_mlflow: bool, use_wandb: bool):
 
     # 2. PRE-TRAINING AUDIT
     print("\n🛡️  Step 2: Pre-training audit...")
-    policy_path = Path(__file__).parent.parent.parent / "policies/loan/risks.oscal.yaml"
+    policy_path = Path(__file__).parent / "policies/loan/data_policy.oscal.yaml"
     
     pre_results = vl.enforce(
         data=df,
-        target='target',
-        gender='gender',
-        age='age',
+        target=target_col,
+        gender=gender_col,
+        age=age_col,
         policy=str(policy_path)
     )
 
@@ -105,14 +111,14 @@ def train_and_evaluate(use_mlflow: bool, use_wandb: bool):
     test_df = df.iloc[X_test.index].copy()
     test_df['prediction'] = model.predict(X_test)
     
-    fairness_policy = Path(__file__).parent.parent.parent / "policies/loan/governance-baseline.oscal.yaml"
+    fairness_policy = Path(__file__).parent / "policies/loan/model_policy.oscal.yaml"
     
     results = vl.enforce(
         data=test_df,
-        target='target',
+        target=target_col,
         prediction='prediction',
-        gender='gender',
-        age='age',
+        gender=gender_col,
+        age=age_col,
         policy=str(fairness_policy)
     )
 

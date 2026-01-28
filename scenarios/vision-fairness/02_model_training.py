@@ -305,7 +305,7 @@ def train():
         logger=False
     )
     
-    with vl.tracecollector("vision_training"):
+    with vl.monitor("vision_training"):
         with mlflow.start_run(run_name=f"MultiTask (LDS + DualInput)"):
             trainer.fit(MultiTaskResNet(lds_weights=lds_weights), train_loader, val_loader)
             

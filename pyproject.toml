@@ -22,7 +22,7 @@ dependencies = [
 dev-dependencies = []
 
 [tool.uv.sources]
-venturalitica = { path = "../../packages/venturalitica-sdk", editable = true }
+venturalitica = { path = "../packages/venturalitica-sdk", editable = true }
 
 [build-system]
 requires = ["hatchling"]

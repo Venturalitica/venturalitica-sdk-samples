@@ -9,7 +9,7 @@ async def main():
     # Check if any evidence exists
     evidence_dir = ".venturalitica"
     if not os.path.exists(evidence_dir) or not os.listdir(evidence_dir):
-        print("❌ Error: .venturalitica/ evidence not found. Run pipeline or tracecollector first.")
+        print("❌ Error: .venturalitica/ evidence not found. Run pipeline or monitor first.")
         return
 
     import argparse

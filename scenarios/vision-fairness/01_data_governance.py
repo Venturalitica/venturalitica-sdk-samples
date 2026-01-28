@@ -45,8 +45,8 @@ def audit_data():
     # 3. Article 10 Audit
     print(f"\n🛡️  [Article 10] Enforcing policy: {POLICY_PATH}")
     
-    # Trace for transparency feed
-    with vl.tracecollector("data_audit"):
+    # Multimodal Monitor for transparency and hardware telemetry
+    with vl.monitor("data_audit"):
         with mlflow.start_run(run_name=f"Data Audit ({SCALE})"):
             
             # Map columns to roles
