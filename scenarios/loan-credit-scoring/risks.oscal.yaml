@@ -1,0 +1,39 @@
+system-security-plan:
+  control-implementation:
+    description: ISO 23894 Implementation Controls
+    implemented-requirements: []
+  metadata:
+    last-modified: '2026-02-01T10:33:26.566Z'
+    oscal-version: 1.1.2
+    title: OSCAL SSP for CreditScore ML 1769941881290
+    version: '1.0'
+  risks:
+  - description: The AI model may develop discriminatory scoring patterns that systematically
+      exclude protected demographic groups from credit opportunities, leading to legal
+      liability and social harm.
+    status: active
+    title: Unfair Credit Exclusion of Minorities
+    uuid: cml3lr3nf001vzuqh6qse7hoh
+  - description: Lack of transparency in the 'black box' model prevents applicants
+      from understanding why their loans were denied, violating consumer rights and
+      EU AI Act transparency requirements.
+    status: active
+    title: Automated Decisions without Explainability
+    uuid: cml3lr6bz001wzuqha6u2c9p3
+  - description: The model's own biased historic decisions being used for retraining
+      may reinforce and amplify existing prejudices over time (Self-fulfilling prophecy),
+      leading to long-term systemic discrimination.
+    status: active
+    title: Poisoned Data from Feedback Loops
+    uuid: cml3lr91p001xzuqh5lfrh10m
+  system-characteristics:
+    description: Credit scoring model for loan applications
+    security-sensitivity-level: high
+    system-id: cml3lqq1d001tzuqhf3ua4cer
+    system-information:
+      information-types:
+      - description: ''
+        title: System Purpose
+        uuid: 8fd4b203-172c-46ca-bb2b-816a3b7ba2f6
+    system-name: CreditScore ML 1769941881290
+  uuid: cml3lqq1d001tzuqhf3ua4cer

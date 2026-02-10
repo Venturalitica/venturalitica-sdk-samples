@@ -203,6 +203,40 @@ def train_and_evaluate(use_mlflow: bool, use_wandb: bool):
 
     return results
 
+def register_local_artifact():
+    """Helper to manually register the model artifact since we are in local mode"""
+    import json
+    from pathlib import Path
+    
+    results_path = Path(".venturalitica/results.json")
+    if results_path.exists():
+        try:
+            with open(results_path, 'r') as f:
+                data = json.load(f)
+            
+            # Add artifact if not present
+            if "artifacts" not in data:
+                data["artifacts"] = []
+            
+            # Avoid duplicates
+            if not any(a.get("name") == "CreditScoring Model v1" for a in data["artifacts"]):
+                data["artifacts"].append({
+                    "name": "CreditScoring Model v1",
+                    "type": "MODEL",
+                    "uri": "file://models/logistic_regression.pkl",
+                    "hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", # Dummy hash
+                    "metadata": {
+                        "framework": "sklearn",
+                        "serialization": "pickle"
+                    }
+                })
+                
+                with open(results_path, 'w') as f:
+                    json.dump(data, f, indent=2)
+                print(f"  ✓ Automatically registered local model artifact in {results_path}")
+        except Exception as e:
+            print(f"  ⚠️ Failed to register artifact: {e}")
+
 def main():
     parser = argparse.ArgumentParser()
     # Updated choices to allow both
@@ -216,6 +250,9 @@ def main():
         print("Using LOCAL mode (No tracking server)")
 
     train_and_evaluate(use_mlflow, use_wandb)
+    
+    if args.framework == 'local':
+        register_local_artifact()
 
 if __name__ == "__main__":
     main()
